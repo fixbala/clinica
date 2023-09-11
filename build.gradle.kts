@@ -31,7 +31,7 @@ dependencies {
     testImplementation ("org.springframework.boot:spring-boot-starter-test")
     implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly ("mysql:mysql-connector-java")
-
+    runtimeOnly ("org.mariadb.jdbc:mariadb-java-client:2.7.3")
 
 }
 
