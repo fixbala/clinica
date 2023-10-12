@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.modelo.entidades;
+package co.edu.uniquindio.modelo;
 
 import jakarta.persistence.*;
 import lombok.*;
