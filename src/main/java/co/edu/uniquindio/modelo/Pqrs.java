@@ -1,4 +1,8 @@
+<<<<<<< HEAD:src/main/java/co/edu/uniquindio/modelo/Pqrs.java
 package co.edu.uniquindio.modelo;
+=======
+package co.edu.uniquindio.proyecto.modelo.entidades;
+>>>>>>> d384ac5 (Entities added):src/main/java/co/edu/uniquindio/proyecto/modelo/entidades/Pqrs.java
 
 import jakarta.persistence.*;
 import lombok.*;
