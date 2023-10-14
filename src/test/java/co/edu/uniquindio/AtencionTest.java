@@ -1,32 +1,33 @@
 package co.edu.uniquindio;
 
+import co.edu.uniquindio.modelo.Atencion;
 import co.edu.uniquindio.modelo.Cita;
 import co.edu.uniquindio.modelo.Medico;
 import co.edu.uniquindio.modelo.Paciente;
 import co.edu.uniquindio.modelo.Usuario;
+import co.edu.uniquindio.repositorios.AtencionRepository;
 import co.edu.uniquindio.repositorios.CitaRepository;
 import co.edu.uniquindio.repositorios.MedicoRepository;
 import co.edu.uniquindio.repositorios.PacienteRepository;
 import co.edu.uniquindio.repositorios.UsuarioRepository;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-
+import java.util.List;
 
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class CitaTest {
+public class AtencionTest {
+
+    @Autowired
+    private AtencionRepository atencionRepository;
 
     @Autowired
     private CitaRepository citaRepository;
@@ -41,7 +42,7 @@ public class CitaTest {
     private UsuarioRepository usuarioRepository;
 
     @Test
-    public void testGuardarCita() {
+    public void testGuardarAtencion() {
         // Crear un usuario para el médico
         Usuario usuarioMedico = new Usuario();
         usuarioMedico.setCedula("123456");
@@ -72,14 +73,19 @@ public class CitaTest {
 
         // Crear una cita para la prueba
         Cita nuevaCita = new Cita("C001", new Date(), new Date(), LocalTime.of(14, 0), "Pendiente", paciente, medico, null, "Consulta de rutina");
-        Cita guardado = citaRepository.save(nuevaCita);
+        Cita citaGuardada = citaRepository.save(nuevaCita);
 
-        Assertions.assertEquals(nuevaCita, guardado, "La cita guardada no coincide con la cita creada");
-        Assertions.assertNotNull(guardado);
+        // Crear una atención para la prueba
+        Atencion nuevaAtencion = new Atencion("A001", null, citaGuardada, "Dolor de cabeza", "Ninguno", "Tomar medicamento");
+        Atencion atencionGuardada = atencionRepository.save(nuevaAtencion);
+
+        // Verificar que la atención fue guardada correctamente
+        Assertions.assertEquals(nuevaAtencion, atencionGuardada, "La atención guardada no coincide con la atención creada");
+        Assertions.assertNotNull(atencionGuardada);
     }
 
     @Test
-    public void testActualizarCita() {
+    public void testActualizarAtencion() {
         // Crear un usuario para el médico
         Usuario usuarioMedico = new Usuario();
         usuarioMedico.setCedula("123456");
@@ -110,23 +116,26 @@ public class CitaTest {
 
         // Crear una cita para la prueba
         Cita nuevaCita = new Cita("C001", new Date(), new Date(), LocalTime.of(14, 0), "Pendiente", paciente, medico, null, "Consulta de rutina");
-        Cita guardado = citaRepository.save(nuevaCita);
+        Cita citaGuardada = citaRepository.save(nuevaCita);
 
-        // Modificar la cita
-        guardado.setMotivo_consulta("Consulta de seguimiento");
-        Cita actualizado = citaRepository.save(guardado);
+        // Crear una atención para la prueba
+        Atencion nuevaAtencion = new Atencion("A001", null, citaGuardada, "Dolor de cabeza", "Ninguno", "Tomar medicamento");
+        Atencion atencionGuardada = atencionRepository.save(nuevaAtencion);
 
-        // Recuperar la cita actualizada de la base de datos
-        Optional<Cita> citaRecuperada = citaRepository.findById(actualizado.getId_cita());
+        // Modificar la atención
+        atencionGuardada.setSintomas("Dolor persistente en la cabeza");
+        Atencion atencionActualizada = atencionRepository.save(atencionGuardada);
 
-        // Verificar que la cita fue actualizada correctamente
-        Assertions.assertTrue(citaRecuperada.isPresent(), "La cita no se encontró en la base de datos");
-        Assertions.assertEquals("Consulta de seguimiento", citaRecuperada.get().getMotivo_consulta(), "El motivo de la consulta no se actualizó correctamente");
+        // Recuperar la atención actualizada de la base de datos
+        Optional<Atencion> atencionRecuperada = atencionRepository.findById(atencionActualizada.getId_atencion());
 
+        // Verificar que la atención fue actualizada correctamente
+        Assertions.assertTrue(atencionRecuperada.isPresent(), "La atención no se encontró en la base de datos");
+        Assertions.assertEquals("Dolor persistente en la cabeza", atencionRecuperada.get().getSintomas(), "Los síntomas de la atención no se actualizaron correctamente");
     }
 
     @Test
-    public void testObtenerCitaPorId() {
+    public void testObtenerAtencionPorId() {
         // Crear un usuario para el médico
         Usuario usuarioMedico = new Usuario();
         usuarioMedico.setCedula("123456");
@@ -157,18 +166,22 @@ public class CitaTest {
 
         // Crear una cita para la prueba
         Cita nuevaCita = new Cita("C001", new Date(), new Date(), LocalTime.of(14, 0), "Pendiente", paciente, medico, null, "Consulta de rutina");
-        Cita guardado = citaRepository.save(nuevaCita);
+        Cita citaGuardada = citaRepository.save(nuevaCita);
 
-        // Obtener la cita por ID
-        Cita obtenida = citaRepository.findById(guardado.getId_cita()).orElse(null);
+        // Crear una atención para la prueba
+        Atencion nuevaAtencion = new Atencion("A001", null, citaGuardada, "Dolor de cabeza", "Ninguno", "Tomar medicamento");
+        Atencion atencionGuardada = atencionRepository.save(nuevaAtencion);
 
-        // Verificar que la cita se haya obtenido correctamente
-        assertNotNull(obtenida);
-        assertEquals(guardado, obtenida, "La cita obtenida no coincide con la cita guardada");
+        // Obtener la atención por ID
+        Atencion atencionObtenida = atencionRepository.findById(atencionGuardada.getId_atencion()).orElse(null);
+
+        // Verificar que la atención se haya obtenido correctamente
+        Assertions.assertNotNull(atencionObtenida);
+        Assertions.assertEquals(atencionGuardada, atencionObtenida, "La atención obtenida no coincide con la atención guardada");
     }
 
     @Test
-    public void testObtenerTodasLasCitas() {
+    public void testObtenerTodasLasAtenciones() {
         // Crear un usuario para el médico
         Usuario usuarioMedico = new Usuario();
         usuarioMedico.setCedula("123456");
@@ -205,17 +218,24 @@ public class CitaTest {
         citaRepository.save(cita2);
         citaRepository.save(cita3);
 
+        // Crear varias atenciones para la prueba
+        Atencion atencion1 = new Atencion("A001", null, cita1, "Dolor de cabeza", "Ninguno", "Tomar medicamento");
+        Atencion atencion2 = new Atencion("A002", null, cita2, "Visión borrosa", "Ninguno", "Recetar lentes");
+        Atencion atencion3 = new Atencion("A003", null, cita3, "Presión alta", "Ninguno", "Recomendar dieta");
+        atencionRepository.save(atencion1);
+        atencionRepository.save(atencion2);
+        atencionRepository.save(atencion3);
 
-        // Obtener todas las citas
-        List<Cita> todasLasCitas = citaRepository.findAll();
+        // Obtener todas las atenciones
+        List<Atencion> todasLasAtenciones = atencionRepository.findAll();
 
-        // Verificar que se hayan obtenido las citas correctamente
-        assertNotNull(todasLasCitas);
-        assertEquals(3, todasLasCitas.size(), "La cantidad de citas obtenidas no es la esperada");
+        // Verificar que se hayan obtenido las atenciones correctamente
+        Assertions.assertNotNull(todasLasAtenciones);
+        Assertions.assertEquals(3, todasLasAtenciones.size(), "La cantidad de atenciones obtenidas no es la esperada");
     }
 
     @Test
-    public void testEliminarCita() {
+    public void testEliminarAtencion() {
         // Crear un usuario para el médico
         Usuario usuarioMedico = new Usuario();
         usuarioMedico.setCedula("123456");
@@ -246,16 +266,20 @@ public class CitaTest {
 
         // Crear una cita para la prueba
         Cita nuevaCita = new Cita("C001", new Date(), new Date(), LocalTime.of(14, 0), "Pendiente", paciente, medico, null, "Consulta de rutina");
-        Cita guardado = citaRepository.save(nuevaCita);
+        Cita citaGuardada = citaRepository.save(nuevaCita);
 
-        // Eliminar la cita
-        citaRepository.deleteById(guardado.getId_cita());
+        // Crear una atención para la prueba
+        Atencion nuevaAtencion = new Atencion("A001", null, citaGuardada, "Dolor de cabeza", "Ninguno", "Tomar medicamento");
+        Atencion atencionGuardada = atencionRepository.save(nuevaAtencion);
 
-        // Intentar obtener la cita eliminada
-        Optional<Cita> citaEliminada = citaRepository.findById(guardado.getId_cita());
+        // Eliminar la atención
+        atencionRepository.deleteById(atencionGuardada.getId_atencion());
 
-        // Verificar que la cita no existe después de eliminarla
-        assertEquals(Optional.empty(), citaEliminada, "La cita no fue eliminada correctamente");
+        // Intentar obtener la atención eliminada
+        Optional<Atencion> atencionEliminada = atencionRepository.findById(atencionGuardada.getId_atencion());
+
+        // Verificar que la atención no existe después de eliminarla
+        Assertions.assertEquals(Optional.empty(), atencionEliminada, "La atención no fue eliminada correctamente");
     }
 
 }

@@ -1,4 +1,4 @@
-package co.edu.uniquindio.test;
+package co.edu.uniquindio;
 
 import co.edu.uniquindio.modelo.Administrador;
 import co.edu.uniquindio.modelo.Usuario;

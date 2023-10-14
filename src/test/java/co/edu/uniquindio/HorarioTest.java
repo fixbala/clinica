@@ -1,4 +1,4 @@
-package co.edu.uniquindio.test;
+package co.edu.uniquindio;
 
 import co.edu.uniquindio.modelo.Horario;
 import co.edu.uniquindio.modelo.Medico;

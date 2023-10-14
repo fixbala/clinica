@@ -1,4 +1,5 @@
 package co.edu.uniquindio.modelo;
+
 import java.time.DayOfWeek;
 import jakarta.persistence.*;
 import lombok.*;

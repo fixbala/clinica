@@ -1,12 +1,10 @@
-<<<<<<< HEAD:src/main/java/co/edu/uniquindio/modelo/Atencion.java
 package co.edu.uniquindio.modelo;
-=======
-package co.edu.uniquindio.proyecto.modelo.entidades;
->>>>>>> d384ac5 (Entities added):src/main/java/co/edu/uniquindio/proyecto/modelo/entidades/Atencion.java
 
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
+
+
 
 @Entity
 @Getter

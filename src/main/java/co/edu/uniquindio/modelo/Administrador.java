@@ -1,8 +1,5 @@
-<<<<<<< HEAD:src/main/java/co/edu/uniquindio/modelo/Administrador.java
 package co.edu.uniquindio.modelo;
-=======
-package co.edu.uniquindio.proyecto.modelo.entidades;
->>>>>>> d384ac5 (Entities added):src/main/java/co/edu/uniquindio/proyecto/modelo/entidades/Administrador.java
+
 
 import jakarta.persistence.*;
 import lombok.*;
