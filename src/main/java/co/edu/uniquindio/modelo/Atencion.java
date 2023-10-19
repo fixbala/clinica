@@ -26,13 +26,13 @@ public class Atencion implements Serializable {
     @JoinColumn(name = "id_cita", referencedColumnName = "id_cita")
     private Cita cita; // Relación @OneToOne con la tabla cita
 
-    @Column(length = 255) // Ajusta la longitud según tus necesidades
+    @Column(length = 255) 
     private String sintomas;
 
-    @Column(length = 255) // Ajusta la longitud según tus necesidades
+    @Column(length = 255) 
     private String diagnostico;
 
-    @Column(length = 255) // Ajusta la longitud según tus necesidades
+    @Column(length = 255)
     private String tratamiento;
 
     public Atencion(String id_atencion, Pqrs pqrs, Cita cita, String sintomas, String diagnostico, String tratamiento) {

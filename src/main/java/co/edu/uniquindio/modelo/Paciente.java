@@ -16,7 +16,7 @@ public class Paciente implements Serializable {
 
     @Id
     @EqualsAndHashCode.Include
-    private String codigo; // Cambio de tipo int a String (VARCHAR)
+    private String codigo; 
     private Date fecha;
     private String eps;
     private String tipo_sangre;

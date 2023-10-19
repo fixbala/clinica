@@ -24,10 +24,65 @@ public class AdministradorTest {
     private UsuarioRepository usuarioRepo;
 
     @Test
+    public void iniciarSesionAdministradorExistenteTest() {
+        // Crear un usuario para el administrador
+        Usuario usuario = new Usuario();
+        usuario.setCedula("A001");
+        usuario.setNombre("Juanita");
+        usuario.setEmail("juana@mail.com");
+        usuario.setPassword("password"); // NO codificar la contraseña
+        usuarioRepo.save(usuario);
+
+        // Crear un administrador para la prueba
+        Administrador administrador = new Administrador();
+        administrador.setCodigo("A001");
+        administrador.setUsuario(usuario);
+        administradorRepo.save(administrador);
+
+        // Intentar iniciar sesión con el administrador y contraseña correctos
+        Optional<Administrador> administradorEncontrado = administradorRepo.findByCodigoAndUsuario_Password("A001", "password");
+
+        // Comprobamos que el administrador haya sido encontrado
+        assertTrue(administradorEncontrado.isPresent());
+    }
+
+    @Test
+    public void iniciarSesionAdministradorNoExistenteTest() {
+        // Intentar iniciar sesión con un administrador que no existe
+        Optional<Administrador> administradorEncontrado = administradorRepo.findByCodigoAndUsuario_Password("A999", "password");
+
+        // Comprobamos que el administrador no haya sido encontrado
+        assertTrue(administradorEncontrado.isEmpty());
+    }
+
+    @Test
+    public void iniciarSesionContrasenaIncorrectaAdministradorTest() {
+        // Crear un usuario para el administrador
+        Usuario usuario = new Usuario();
+        usuario.setCedula("A002");
+        usuario.setNombre("Pedro");
+        usuario.setEmail("pedro@mail.com");
+        usuario.setPassword("password"); // NO codificar la contraseña
+        usuarioRepo.save(usuario);
+
+        // Crear un administrador para la prueba
+        Administrador administrador = new Administrador();
+        administrador.setCodigo("A002");
+        administrador.setUsuario(usuario);
+        administradorRepo.save(administrador);
+
+        // Intentar iniciar sesión con una contraseña incorrecta
+        Optional<Administrador> administradorEncontrado = administradorRepo.findByCodigoAndUsuario_Password("A002", "contrasenaincorrecta");
+
+        // Comprobamos que el administrador no haya sido encontrado
+        assertTrue(administradorEncontrado.isEmpty());
+    }
+
+    @Test
     public void registrarAdministradorTest() {
         // Crear un usuario para el administrador
         Usuario usuario = new Usuario();
-        usuario.setCedula("111");
+        usuario.setCedula("A001");
         usuario.setNombre("Juanita");
         usuario.setEmail("juana@mail.com");
         usuarioRepo.save(usuario);

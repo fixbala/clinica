@@ -18,8 +18,7 @@ public class RespuestaPqrs implements Serializable {
     private String id_respuesta;
     private Date fecha;
 
-    // Nuevo campo de tipo texto
-    @Column(length = 1000) // Ajusta la longitud según tus necesidades
+    @Column(length = 1000)
     private String texto;
 
     @ManyToOne

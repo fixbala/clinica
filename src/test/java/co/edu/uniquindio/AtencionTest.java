@@ -53,8 +53,6 @@ public class AtencionTest {
         Medico medico = new Medico();
         medico.setCodigo("M001");
         medico.setEspecialidad("Oftalmología");
-        medico.setHora_inicio(LocalTime.of(9, 0));
-        medico.setHora_final(LocalTime.of(17, 0));
         medico.setUsuario(usuarioMedico);
         medicoRepository.save(medico);
 
@@ -96,8 +94,6 @@ public class AtencionTest {
         Medico medico = new Medico();
         medico.setCodigo("M001");
         medico.setEspecialidad("Oftalmología");
-        medico.setHora_inicio(LocalTime.of(9, 0));
-        medico.setHora_final(LocalTime.of(17, 0));
         medico.setUsuario(usuarioMedico);
         medicoRepository.save(medico);
 
@@ -146,8 +142,6 @@ public class AtencionTest {
         Medico medico = new Medico();
         medico.setCodigo("M001");
         medico.setEspecialidad("Oftalmología");
-        medico.setHora_inicio(LocalTime.of(9, 0));
-        medico.setHora_final(LocalTime.of(17, 0));
         medico.setUsuario(usuarioMedico);
         medicoRepository.save(medico);
 
@@ -192,8 +186,6 @@ public class AtencionTest {
         Medico medico = new Medico();
         medico.setCodigo("M001");
         medico.setEspecialidad("Oftalmología");
-        medico.setHora_inicio(LocalTime.of(9, 0));
-        medico.setHora_final(LocalTime.of(17, 0));
         medico.setUsuario(usuarioMedico);
         medicoRepository.save(medico);
 
@@ -246,8 +238,6 @@ public class AtencionTest {
         Medico medico = new Medico();
         medico.setCodigo("M001");
         medico.setEspecialidad("Oftalmología");
-        medico.setHora_inicio(LocalTime.of(9, 0));
-        medico.setHora_final(LocalTime.of(17, 0));
         medico.setUsuario(usuarioMedico);
         medicoRepository.save(medico);
 

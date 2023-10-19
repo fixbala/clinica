@@ -35,6 +35,7 @@ dependencies {
     runtimeOnly ("org.mariadb.jdbc:mariadb-java-client:2.7.3")
     testImplementation ("org.junit.jupiter:junit-jupiter-api:5.7.2")
     testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 }
 
 tasks.test {

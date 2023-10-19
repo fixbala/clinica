@@ -18,6 +18,51 @@ public class UsuarioTest {
     @Autowired
     private UsuarioRepository usuarioRepo;
 
+
+    @Test
+    public void iniciarSesionUsuarioExistenteTest() {
+        // Crear un usuario para la prueba
+        Usuario u = new Usuario();
+        u.setCedula("111");
+        u.setNombre("Juanita");
+        u.setEmail("juana@mail.com");
+        u.setPassword("password"); 
+        usuarioRepo.save(u);
+    
+        // Intentar iniciar sesión con el usuario y contraseña correctos
+        Optional<Usuario> usuarioEncontrado = usuarioRepo.findByCedulaAndPassword("111", "password");
+    
+        // Comprobamos que el usuario haya sido encontrado
+        assertTrue(usuarioEncontrado.isPresent());
+    }
+
+    @Test
+    public void iniciarSesionUsuarioNoExistenteTest() {
+        // Intentar iniciar sesión con un usuario que no existe
+        Optional<Usuario> usuarioEncontrado = usuarioRepo.findByCedulaAndPassword("999", "password");
+
+        // Comprobamos que el usuario no haya sido encontrado
+        assertTrue(usuarioEncontrado.isEmpty());
+    }
+
+    @Test
+    public void iniciarSesionContrasenaIncorrectaTest() {
+        // Crear un usuario para la prueba
+        Usuario u = new Usuario();
+        u.setCedula("222");
+        u.setNombre("Pedro");
+        u.setEmail("pedro@mail.com");
+        u.setPassword("password"); // Almacena la contraseña directamente (sin encriptar)
+        usuarioRepo.save(u);
+
+        // Intentar iniciar sesión con una contraseña incorrecta
+        Optional<Usuario> usuarioEncontrado = usuarioRepo.findByCedulaAndPassword("222", "contrasenaincorrecta");
+
+        // Comprobamos que el usuario no haya sido encontrado
+        assertTrue(usuarioEncontrado.isEmpty());
+    }
+
+
     @Test
     public void registrarUsuarioTest() {
         // Crear un usuario para la prueba

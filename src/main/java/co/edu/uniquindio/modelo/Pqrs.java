@@ -19,7 +19,7 @@ public class Pqrs implements Serializable {
     private String num_radicado;
     private Date fecha_creacion;
     private int estado;
-    private String detalle; // Nuevo atributo de tipo texto
+    private String detalle; 
 
     @ManyToOne
     @JoinColumn(name = "cedula_paciente")
@@ -29,7 +29,7 @@ public class Pqrs implements Serializable {
     private List<RespuestaPqrs> respuestas; // Relación @OneToMany con la tabla respuestaPqrs
 
     @OneToOne
-    @JoinColumn(name = "id_atencion") // Cambia el nombre del campo a la clave primaria de la tabla Atencion
+    @JoinColumn(name = "id_atencion")
     private Atencion atencion; // Relación @OneToOne con la tabla Atencion
 
     public Pqrs(String num_radicado, Date fecha_creacion, int estado, Paciente paciente, String detalle, Atencion atencion) {

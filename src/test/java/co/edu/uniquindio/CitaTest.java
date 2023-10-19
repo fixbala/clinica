@@ -1,6 +1,7 @@
 package co.edu.uniquindio;
 
 import co.edu.uniquindio.modelo.Cita;
+import co.edu.uniquindio.modelo.Horario;
 import co.edu.uniquindio.modelo.Medico;
 import co.edu.uniquindio.modelo.Paciente;
 import co.edu.uniquindio.modelo.Usuario;
@@ -12,11 +13,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
@@ -52,8 +56,6 @@ public class CitaTest {
         Medico medico = new Medico();
         medico.setCodigo("M001");
         medico.setEspecialidad("Oftalmología");
-        medico.setHora_inicio(LocalTime.of(9, 0));
-        medico.setHora_final(LocalTime.of(17, 0));
         medico.setUsuario(usuarioMedico);
         medicoRepository.save(medico);
 
@@ -90,8 +92,6 @@ public class CitaTest {
         Medico medico = new Medico();
         medico.setCodigo("M001");
         medico.setEspecialidad("Oftalmología");
-        medico.setHora_inicio(LocalTime.of(9, 0));
-        medico.setHora_final(LocalTime.of(17, 0));
         medico.setUsuario(usuarioMedico);
         medicoRepository.save(medico);
 
@@ -137,8 +137,6 @@ public class CitaTest {
         Medico medico = new Medico();
         medico.setCodigo("M001");
         medico.setEspecialidad("Oftalmología");
-        medico.setHora_inicio(LocalTime.of(9, 0));
-        medico.setHora_final(LocalTime.of(17, 0));
         medico.setUsuario(usuarioMedico);
         medicoRepository.save(medico);
 
@@ -179,8 +177,6 @@ public class CitaTest {
         Medico medico = new Medico();
         medico.setCodigo("M001");
         medico.setEspecialidad("Oftalmología");
-        medico.setHora_inicio(LocalTime.of(9, 0));
-        medico.setHora_final(LocalTime.of(17, 0));
         medico.setUsuario(usuarioMedico);
         medicoRepository.save(medico);
 
@@ -226,8 +222,6 @@ public class CitaTest {
         Medico medico = new Medico();
         medico.setCodigo("M001");
         medico.setEspecialidad("Oftalmología");
-        medico.setHora_inicio(LocalTime.of(9, 0));
-        medico.setHora_final(LocalTime.of(17, 0));
         medico.setUsuario(usuarioMedico);
         medicoRepository.save(medico);
 
@@ -257,5 +251,48 @@ public class CitaTest {
         // Verificar que la cita no existe después de eliminarla
         assertEquals(Optional.empty(), citaEliminada, "La cita no fue eliminada correctamente");
     }
+
+    @Test
+    public void testHorarioPermiteAgendarCita() {
+        // Crear un usuario para el médico
+        Usuario usuarioMedico = new Usuario();
+        usuarioMedico.setCedula("123456");
+        usuarioMedico.setNombre("Nombre de Medico");
+        usuarioRepository.save(usuarioMedico);
+
+        // Crear un médico para la prueba con un horario específico (por ejemplo, de 13:00 a 15:00 los lunes)
+        Medico medico = new Medico();
+        medico.setCodigo("M001");
+        medico.setEspecialidad("Oftalmología");
+        medico.setUsuario(usuarioMedico);
+
+        // Agregar un horario al médico
+        Horario horario = new Horario(medico, DayOfWeek.MONDAY, LocalTime.of(13, 0), LocalTime.of(15, 0));
+        medico.getHorarios().add(horario);
+
+        medicoRepository.save(medico);
+
+        // Crear un usuario para el paciente
+        Usuario usuarioPaciente = new Usuario();
+        usuarioPaciente.setCedula("654321");
+        usuarioPaciente.setNombre("Nombre de Paciente");
+        usuarioRepository.save(usuarioPaciente);
+
+        // Crear un paciente para la prueba
+        Paciente paciente = new Paciente();
+        paciente.setCodigo("P001");
+        paciente.setEps("EPS Test");
+        paciente.setUsuario(usuarioPaciente);
+        pacienteRepository.save(paciente);
+
+        // Crear una cita para la prueba (dentro del rango del horario del médico)
+        Cita nuevaCita = new Cita("C001", new Date(), new Date(), LocalTime.of(14, 0), "Pendiente", paciente, medico, null, "Consulta de rutina");
+        Cita guardado = citaRepository.save(nuevaCita);
+
+        Assertions.assertEquals(nuevaCita, guardado, "La cita guardada no coincide con la cita creada");
+        Assertions.assertNotNull(guardado);
+    }
+    
+    
 
 }

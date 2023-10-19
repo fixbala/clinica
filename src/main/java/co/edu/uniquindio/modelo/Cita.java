@@ -22,8 +22,7 @@ public class Cita implements Serializable {
     private LocalTime hora;
     private String estado;
 
-    // Nuevo campo motivo_consulta
-    @Column(length = 255) // Ajusta la longitud según tus necesidades
+    @Column(length = 255) 
     private String motivo_consulta;
 
     @OneToOne(mappedBy = "cita")

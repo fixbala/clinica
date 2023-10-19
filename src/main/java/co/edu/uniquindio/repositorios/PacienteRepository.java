@@ -7,5 +7,4 @@ import co.edu.uniquindio.modelo.Paciente;
 
 @Repository
 public interface PacienteRepository extends JpaRepository<Paciente, String> {
-    // Puedes agregar consultas personalizadas si es necesario
 }
