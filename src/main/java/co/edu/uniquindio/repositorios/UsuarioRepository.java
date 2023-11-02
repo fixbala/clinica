@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     Optional<Usuario> findByCedulaAndPassword(String cedula, String password);
+    Usuario findByCedula(String cedula);
 }
